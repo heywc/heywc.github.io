@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Keep Team">
+    
+    <title>
+        
+            移动端浏览器导出excel的神奇之旅 |
+        
+        Keep Theme
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Keep Theme
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">移动端浏览器导出excel的神奇之旅</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">Keep Team</span>
+                        
+                            <span class="author-label">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;
+        <span class="pc">2022-04-24 00:25:05</span>
+        <span class="mobile">2022-04-24 00:25</span>
+    </span>
+    
+    
+
+    
+    
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>故事还得从一个朴实无华的需求说起，产品要求在移动端 H5 应用中增加导出 excel 的功能，年底前要上线的，我一想<code>导出excel</code>，这我不是在 PC 端写过 N 次了嘛，简直小菜一碟嘛。我就是加班，也不要后端开一个接口（开个玩笑 O(∩_∩)O 哈哈~）。</p>
+<p>后端大佬给出的接口是这样的：</p>
+<p>路径： <code>/api/project/statistics/excelProject</code></p>
+<p>请求类型: <code>Get</code></p>
+<p>请求头: <code>Content-Type:application/x-www-form-urlencoded</code></p>
+<p>需要的参数： <code>beginDate</code> <code>endDate</code> <code>keyword</code></p>
+<p>我一看这个接口，既然是 get 请求，那么将参数拼接在地址后面，岂不是可以直接通过 window.open 来打开新窗口触发 get 请求下载文件了。于是就有了第一种方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> hostUrl = <span class="hljs-string">`http://<span class="hljs-subst">$&#123;location.host&#125;</span>`</span>;<br><span class="hljs-variable language_">window</span>.<span class="hljs-title function_">open</span>(<br>  <span class="hljs-string">`<span class="hljs-subst">$&#123;hostUrl&#125;</span>/api/project/statistics/excelProject?beginDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.beginDate&#125;</span>&amp;endDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.endDate&#125;</span>&amp;keyword =<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.keyword&#125;</span> `</span><br>);<br></code></pre></td></tr></table></figure>
+
+<p>很快啊，一下子就在 PC 端上的浏览器实现了导出 excel 的功能，不多不少，功能刚刚好，这导出 excel 多是一件美事呀。</p>
+<p>乍一看还真简单呢！然后我准备在移动端上进行测试，结果呢,拉了。。。</p>
+<p>首先是<code>安卓微信浏览器</code>，使用 window.open 会直接打开一个新窗口，然而这个新窗口并不是微信浏览器里的，而是在手机上默认的浏览器打开。那么问题来了，用户并没有在手机默认浏览器登录过，然后触发导出接口必然会对用户权限进行验证所以就如下所示了：</p>
+<p><img src="https://files.mdnice.com/user/8429/c3720d30-00f1-4ce6-8bc6-64fe55603681.png"></p>
+<p>既然安卓系统上的微信浏览器无法实现,那么可以试试<code>手机默认的浏览器</code>呀(这里我用的是小米)毕竟打开新窗口时用户的权限信息都是在的呀。然后，我又进行了测试。结果如下所示，<br><img src="https://files.mdnice.com/user/8429/7b17d841-edca-4389-8cea-0ee3650c9adf.jpg"></p>
+<p>虽然有了下载的弹框，但是下载居然是 bin 文件。我百思不得姐，于是又去冲了会浪，综合网上的说法，我断定是接口响应头部 content-type 类型不对才导致的问题。于是，我用抓包工具看下了这个接口的响应。你们有人可能会好奇，在 PC 端的 chrome 中的 network 不是可以直接看接口的请求记录嘛。当然我也想这么操作呀，只不过当我触发 window.open 时，浏览器貌似闪了一下就弹了个下载提示框就没了，请求记录压根没有在原来窗口的 network 中记录下来。所以我只能请出抓包工具了呀。然后一看抓包截图就发现了：<br><img src="https://files.mdnice.com/user/8429/452b56a6-8706-4d7b-8040-d21d85d84173.png"><br>这里居然用的是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title class_">Content</span>-<span class="hljs-title class_">Type</span>: application/x-download;charset=<span class="hljs-variable constant_">UTF</span>-<span class="hljs-number">8</span><span class="hljs-string">`</span><br></code></pre></td></tr></table></figure>
+
+<p>于是我让后端将响应头部改成了这样之后，才算在安卓上的浏览器能正常下载 excel</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title class_">Content</span>-<span class="hljs-title class_">Type</span>: application/vnd.<span class="hljs-property">openxmlformats</span>-officedocument.<span class="hljs-property">spreadsheetml</span>.<span class="hljs-property">sheet</span><span class="hljs-string">`</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://files.mdnice.com/user/8429/1b679a37-7d94-4b5a-b6bc-5b39207e49d7.jpg"></p>
+<p>中途后端也曾用过’application/vnd.ms-excel’，但是兼容效果并不理想，虽然在安卓机的浏览器上确实能正确弹出下载 excel 文件的提示，但是在 ios 浏览器中压根连 excel 都无法预览了，更别提弹框提示下载了。</p>
+<p>前面介绍的都是安卓机的试验，那现在看看 ios 上的表现，首先试试<code>ios微信浏览器</code>呢？这里就挺神奇的，我本以为会同安卓一样打开了默认浏览器 Safari，但是在触发 window.open()时，并没有在手机默认的 safari 浏览器中打开新窗口而是在微信浏览器内部打开了新窗口，那么此时用户的权限便是正常的。我一想，这不就代表会进行下载了嘛！！！然后离谱的事情发生了，新窗口只是中正确展示了 excel 文件信息，但是并没有下载提示（貌似只有用户在第一次进行下载时，才会有下载提示）<br><img src="https://files.mdnice.com/user/8429/3cae26fc-e53c-41ec-a86d-200c8aed34e4.jpg"></p>
+<p>之后，我又在 ios 默认浏览器 Safari 上进行了测试，测试结果和<code>ios微信浏览器</code>的运行效果是一样的:同样只是在新窗口中展示了 excel 文件却并没有下载的提示框。</p>
+<p>因此我得出结论：<code>window.open是没法完整实现安卓和ios各自的微信浏览器以及手机默认浏览器下载excel的功能，综合表现很差</code>。</p>
+<hr>
+
+<p>既然 window.open 走不通，那么我准备用 a 标签来试试。</p>
+<p>由于后端给出的接口是 get 请求。所以我可以尝试两种方式来进行 a 标签的下载文件。<br>一种便是将 get 请求返回的文件流转成 url;另一种就是直接使用 get 请求地址。代码分别如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs JS"><span class="hljs-comment">// 导出项目excel</span><br><span class="hljs-title function_">excelProject</span>(<span class="hljs-params">params</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;api/api/project/statistics/excelProject&#x27;</span>, params,&#123;<br>    <span class="hljs-attr">responseType</span>: <span class="hljs-string">&#x27;blob&#x27;</span>,<br>  &#125;)<br>&#125;,<br><span class="hljs-comment">// 导出人员excel</span><br><span class="hljs-title function_">excelUser</span>(<span class="hljs-params">params</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;api/api/project/statistics/excelUser&#x27;</span>, params,&#123;<br>    <span class="hljs-attr">responseType</span>: <span class="hljs-string">&#x27;blob&#x27;</span>,<br>  &#125;)<br>&#125;,<br><br><br><span class="hljs-keyword">async</span> <span class="hljs-title function_">outputExcel</span>(<span class="hljs-params">type</span>) &#123;<br>    <span class="hljs-keyword">if</span>(type === <span class="hljs-string">&#x27;项目&#x27;</span>) &#123;<br>        <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">excelProject</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">download</span>(data,<span class="hljs-string">&#x27;项目&#x27;</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">&#x27;人员&#x27;</span>) &#123;<br>        <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">excelUser</span>();<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">download</span>(data, <span class="hljs-string">&#x27;人员&#x27;</span>);<br>    &#125;<br>&#125;,<br><span class="hljs-title function_">download</span>(<span class="hljs-params">data,type</span>) &#123;<br>    <span class="hljs-keyword">let</span> eleLink = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;a&#x27;</span>);<br>    <span class="hljs-keyword">let</span> url = <span class="hljs-variable language_">window</span>.<span class="hljs-property">URL</span>.<span class="hljs-title function_">createObjectURL</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Blob</span>([data]));<br>    eleLink.<span class="hljs-property">href</span> = url;<br>    eleLink.<span class="hljs-property">download</span> = <span class="hljs-string">`<span class="hljs-subst">$&#123;type&#125;</span>统计.xlsx`</span>;<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(eleLink);<br>    eleLink.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;none&#x27;</span>;<br>    eleLink.<span class="hljs-title function_">click</span>();<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">removeChild</span>(eleLink)<br>    <span class="hljs-variable language_">window</span>.<span class="hljs-property">URL</span>.<span class="hljs-title function_">revokeObjectURL</span>(eleLink);<br>&#125;,<br><br><br></code></pre></td></tr></table></figure>
+
+<p>这种方法在 ios 微信浏览器和安卓微信浏览器中的效果一样，点击之后只是进行了接口请求，虽然也生成了 a 标签但是点击后并不能导出 excel。</p>
+<p>然而在部分移动端浏览器中可以实现比如 Safari、小米浏览器等可以正常提示下载并导出 excel。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs JS"><span class="hljs-title function_">outputExcel</span>(<span class="hljs-params">type</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">download</span>(type);<br>&#125;,<br><br><span class="hljs-title function_">download</span>(<span class="hljs-params">type</span>) &#123;<br>    <span class="hljs-keyword">let</span> hostUrl = <span class="hljs-string">`http://<span class="hljs-subst">$&#123;location.host&#125;</span>`</span>;<br>    <span class="hljs-comment">// 项目</span><br>    <span class="hljs-keyword">const</span> projectExcelUrl = <span class="hljs-string">`<span class="hljs-subst">$&#123;hostUrl&#125;</span>/api/project/statistics/excelProject?beginDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.beginDate&#125;</span>&amp;endDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.endDate&#125;</span>&amp;keyword =<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.keyword&#125;</span>`</span>;<br>    <span class="hljs-comment">// 人员</span><br>    <span class="hljs-keyword">const</span> userExcelUrl = <span class="hljs-string">`<span class="hljs-subst">$&#123;hostUrl&#125;</span>/api/project/statistics/excelUser?beginDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.beginDate&#125;</span>&amp;endDate=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.endDate&#125;</span>&amp;keyword =<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.keyword&#125;</span>`</span>;<br>    <span class="hljs-keyword">let</span> link = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-string">&#x27;a&#x27;</span>)<br>    link.<span class="hljs-property">style</span>.<span class="hljs-property">display</span> = <span class="hljs-string">&#x27;none&#x27;</span><br>    link.<span class="hljs-property">href</span> = type === <span class="hljs-string">&#x27;项目&#x27;</span> ? <span class="hljs-attr">projectExcelUrl</span>: userExcelUrl;<br>    link.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&#x27;download&#x27;</span>, <span class="hljs-string">`<span class="hljs-subst">$&#123;type&#125;</span>.xlsx`</span>)<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">appendChild</span>(link)<br>    link.<span class="hljs-title function_">click</span>()<br>    <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>.<span class="hljs-title function_">removeChild</span>(link)<br>&#125;,<br></code></pre></td></tr></table></figure>
+
+<p>使用绝对地址的方法的话，ios 微信浏览器只会在新页面中展示 excel，但没有提示下载。但在安卓微信浏览器中触发方法时，会在手机默认浏览器打开新窗口，那么会因为没有用户登录信息而提示未登录就跟 window.open 产生的结果是一样的。</p>
+<p>在测试 iOS 默认浏览器 Safari 中可以正常展示且提示了下载，安卓手机默认浏览器（小米）可以正常提示下载。</p>
+<p>总结 a 标签的各种浏览器测试结果：<code>文件流转URL比直接使用地址的表现差，a标签下载excel在手机默认浏览器中有很好的表现，但是在微信浏览器中依然无法实现下载功能。综合表现比通过window.open更好些。</code></p>
+<p>本来是想实现在微信浏览器中实现直接下载 excel 的功能，但是经过多次实验之后，发现微信浏览器确实在下载文件方面确实表现不够好。因此最后和同事讨论的<code>解决办法是：使用a标签进行下载excel，判断用户登录的浏览器是否是微信浏览器，是的情况下，我们给出提示：通过点击右上角（···）并在浏览器（默认）中打开。而用户一开始就是在默认浏览器打开时，我们就不做任何处理。</code></p>
+
+        </div>
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2022/04/24/%E8%84%9A%E6%89%8B%E6%9E%B6%E6%90%AD%E5%BB%BA/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">脚手架搭建</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2020</span>
+              -
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">Keep Team</a>
+        </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+        </div>
+        
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="fas fa-arrow-up"></i>
+            </li>
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts">
+    
+</div>
+
+
+
+</body>
+</html>
