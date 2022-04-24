@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -22,9 +22,9 @@
 
     <script id="hexo-configurations">
     let KEEP = window.KEEP || {};
-    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN"};
     KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":false},"style":{"primary_color":"#0066CC","avatar":"/images/head.jpg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":false,"scale":false},"first_screen":{"enable":false,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving."},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":false}}},"local_search":{"enable":false,"preload":false},"code_copy":{"enable":false,"style":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"version":"3.4.5"};
-    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
   </script>
 <meta name="generator" content="Hexo 5.4.2"></head>
 
@@ -62,7 +62,7 @@
                             <a class=""
                                href="/"
                             >
-                                HOME
+                                首页
                             </a>
                         </li>
                     
@@ -70,7 +70,7 @@
                             <a class=""
                                href="/archives"
                             >
-                                ARCHIVES
+                                归档
                             </a>
                         </li>
                     
@@ -91,12 +91,12 @@
             
                 <li class="drawer-menu-item flex-center">
                     <a class=""
-                       href="/">HOME</a>
+                       href="/">首页</a>
                 </li>
             
                 <li class="drawer-menu-item flex-center">
                     <a class=""
-                       href="/archives">ARCHIVES</a>
+                       href="/archives">归档</a>
                 </li>
             
         </ul>
@@ -224,7 +224,7 @@
 <p>最后使用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">// xx.vue<br>&lt;YuiBtn /&gt;<br></code></pre></td></tr></table></figure>
 
-<p>如果还是有疑问的，可以看下源码，github 地址，点击这里<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/1842347744/button-plugin.git" >查看源码<i class="fas fa-external-link-alt"></i></a></p>
+<p>如果还是有疑问的，可以看下源码，github 地址，点击这里<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/heywc/button-plugin.git" >查看源码<i class="fas fa-external-link-alt"></i></a></p>
 <p>补充一下发布插件的一些看法，有一些文章中介绍通过<code>vue-cli</code>初始化一个项目，然后开发插件，再发布。但是这会有个问题，你发布的插件的 package.josn 中的依赖信息将会是当前这个项目的依赖信息，显然这是不妥的。因此我的操作就是新建一个 npm 包，再移植插件代码，最后发布。</p>
 <p>但是从另一个角度看的话，也是可以接受的–那就是开发组件库。如果当前项目就是针对于要开发的组件库而言的，那么依赖信息便不会显得过于累赘，同时仅限于 vue 的项目。<br>并且组件库涉及到分块打包等的问题，需要搭配 webpack，而正好 vue-cli 内置了 webapck。</p>
 <h2 id="如何封装并发布组件库"><a href="#如何封装并发布组件库" class="headerlink" title="如何封装并发布组件库"></a>如何封装并发布组件库</h2><p>其实看完插件的开发与发布，你就应该明白了组件库的开发会是一个什么样的流程了。我前面也说过，组件库就是插件。</p>
@@ -301,7 +301,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// main.js</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">YuiButton</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;ywc-ui&quot;</span>;<br><span class="hljs-title class_">Vue</span>.<span class="hljs-title function_">use</span>(<span class="hljs-title class_">YuiButton</span>);<br></code></pre></td></tr></table></figure>
 
 <p>文章虽然比较简短，但是一个组件库 demo 基本功能都已实现,大佬的话就别杠我了（手动狗头）！</p>
-<p>-&gt;github 点击这里 <a class="link"   target="_blank" rel="noopener" href="https://github.com/1842347744/ywc-ui.git" >组件库模板地址<i class="fas fa-external-link-alt"></i></a></p>
+<p>-&gt;github 点击这里 <a class="link"   target="_blank" rel="noopener" href="https://github.com/heywc/ywc-ui.git" >组件库模板地址<i class="fas fa-external-link-alt"></i></a></p>
 <p>如果对这方面感兴趣的小伙伴，可以联系我，我计划过一段时间会开始系统性地开发自己的组件库，希望有小伙伴可以加入我的<code>开源计划</code>~缺人！！！</p>
 <p><img src="https://img.soogif.com/5HkHKKxGJ6ZmhQ7c8nLYOE9jfEXDpqp4.gif?scope=mdnice"></p>
 
@@ -324,7 +324,7 @@
                             </span>
                             <span class="title flex-center">
                                 <span class="post-nav-title-item">脚手架搭建</span>
-                                <span class="post-nav-item">Prev posts</span>
+                                <span class="post-nav-item">上一篇</span>
                             </span>
                         </a>
                     </div>
@@ -337,7 +337,7 @@
                         >
                             <span class="title flex-center">
                                 <span class="post-nav-title-item">速刷TypeScript</span>
-                                <span class="post-nav-item">Next posts</span>
+                                <span class="post-nav-item">下一篇</span>
                             </span>
                             <span class="right arrow-icon flex-center">
                               <i class="fas fa-chevron-right"></i>
@@ -364,14 +364,14 @@
         <div class="copyright-info info-item">
             &copy;
             
-              <span>2020</span>
+              <span>2022</span>
               -
             
             2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">heywc</a>
         </div>
         
         <div class="theme-info info-item">
-            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
+            由 <a target="_blank" href="https://hexo.io">Hexo</a> 驱动&nbsp;|&nbsp;主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.5</a>
         </div>
         
         
